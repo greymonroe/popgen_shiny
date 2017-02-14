@@ -13,10 +13,9 @@ library(ggplot2)
 # Define server logic required to draw a histogram
 shinyServer(function(input, output, session) {
 
-  n<-1000
   
   observeEvent(input$goButton, {
-  
+  n<-isolate(input$n)
   dummy <- reactiveValues(
     generation=0,
     A_freq=1,

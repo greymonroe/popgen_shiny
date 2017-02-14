@@ -18,6 +18,7 @@ shinyUI(fluidPage(
   # Sidebar with a slider input for number of bins 
   sidebarLayout(
     sidebarPanel(
+      numericInput("n", label = h3("Population size"), value=1000),
       numericInput("s", label = h3("Selection coefficent (s)"), value=0),
       numericInput("u", label = h3("Mutation rate"), value=0.0001),
       actionButton("goButton", "start/restart")

@@ -49,7 +49,7 @@ shinyServer(function(input, output, session) {
       }
       
       if (s<0) {
-        s<--s0
+        s<--s
         dummy$pop<-c(rep(dummy$pop[a_alleles], 9), 
                rep(dummy$pop[A_alleles2], 9+sample(c(0,1), size=length(A_alleles2), prob=c(1-s,s), replace=T)))
         dummy$pop<-dummy$pop[sample(1:length(dummy$pop), n)]

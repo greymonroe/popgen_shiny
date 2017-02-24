@@ -20,17 +20,30 @@ shinyServer(function(input, output, session) {
     generation=0,
     A_freq=1,
     simresults=data.frame(generation=0, a_freq=0),
-    pop=rep("A", n)
+    pop=rep("A", n),
+    plot_labels=data.frame(gen=0, selection=input$s, mutation=input$u)
   )
+  
+  observeEvent(c(input$u,input$s), {
+    isolate({generation<-dummy$generation})
+    dummy$plot_labels <-rbind(dummy$plot_labels, data.frame(gen=generation, selection=input$s, mutation=input$u))
+  })
     
  
   output$freqPlot <- renderPlot({
-    plot(dummy$simresults$generation, dummy$simresults$a_freq, type="l", xlab="Generation", ylab="Frequency of a allele")
-    })
+    plot(dummy$simresults$generation, dummy$simresults$a_freq, type="l", xlab="Generation", ylab="Frequency of a allele", main=paste("Population size of", n))
+    abline(v=dummy$plot_labels$gen, col="red")
+    text(dummy$plot_labels$gen, 0.9*max(dummy$simresults$a_freq), paste("s =", dummy$plot_labels$selection))
+    text(dummy$plot_labels$gen, 0.8*max(dummy$simresults$a_freq), paste("u =", dummy$plot_labels$mutation))
     
+     })
+  
+
+  
   observe({ 
     s<-input$s
     u<-input$u
+    
     isolate({
       A_alleles<-which(dummy$pop=="A")
       mutation<-sample(c(0,1), size=length(A_alleles), replace=TRUE, prob=c(1-u,u))
@@ -66,6 +79,7 @@ shinyServer(function(input, output, session) {
     }
   
 })
+
   })
 })
   
